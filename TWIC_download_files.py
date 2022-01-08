@@ -1,10 +1,11 @@
-import requests
+import requests, zipfile, io
+
 
 print('Initalazing')
 
 last_num = 1417
 
-older_num = 923
+older_num = 920
 
 for num in range(older_num, last_num+1):
     url = 'https://theweekinchess.com/zips/twic'
@@ -14,13 +15,15 @@ for num in range(older_num, last_num+1):
     print(url)
     print('\n')
 
-    req = requests.get(url)
+    req = requests.get(url, headers={"User-Agent": "XY"})
 
     filename = url.split('/')[-1]
 
-    # Writing the file to the local file system
-    with open(filename, 'wb') as output_file:
-        output_file.write(req.content)
+    print(filename)
+
+    z = zipfile.ZipFile(io.BytesIO(req.content))
+    z.extractall()
+
 
 # Split URL to get the file name
 
